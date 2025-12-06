@@ -1,0 +1,29 @@
+html,
+body {
+    height: 100%;
+}
+
+.page-container {
+    min-height: 100vh !important;
+    height: 100vh;
+}
+
+.page-content {
+    height: 100%;
+}
+
+.content-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.panel {
+    border: none;
+}
+

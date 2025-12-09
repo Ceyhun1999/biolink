@@ -14,6 +14,18 @@ class PatientController extends Controller
     {
         $sortBy = $request->get('sort', 'id');
         $sortDirection = $request->get('direction', 'asc');
+        $search = $request->get('search');
+
+        $query = Patient::with(['patientSource']);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('firstName', 'like', "%{$search}%")
+                    ->orWhere('lastName', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
 
         if (!in_array($sortDirection, ['asc', 'desc'])) {
             $sortDirection = 'asc';
@@ -38,16 +50,16 @@ class PatientController extends Controller
 
 
         if ($sortBy === 'source') {
-            $patients = Patient::with(['patientSource'])
+            $query
                 ->join('patient_sources', 'patients.patient_source_id', '=', 'patient_sources.id')
                 ->orderBy('patient_sources.name', $sortDirection)
-                ->select('patients.*')
-                ->get();
+                ->select('patients.*');
         } else {
-            $patients = Patient::with(['patientSource'])
-                ->orderBy($sortBy, $sortDirection)
-                ->get();
+            $query
+                ->orderBy($sortBy, $sortDirection);
         }
+
+        $patients = $query->get();
 
         return view('admin.patient.index', [
             'patients' => $patients,

@@ -5,14 +5,22 @@
         <div class="panel-heading d-flex">
             <h5 class="panel-title">XƏSTƏLƏR</h5>
             <div class="heading-elements">
-                <form action="#" class="heading-form pull-right" method="get" accept-charset="utf-8">
-                    <div class="form-group has-feedback">
-                        <input type="search" name="firstname" value="" class="form-control" placeholder="Axtar"
-                            autocomplete="search">
-                        <div class="form-control-feedback">
+                <form action="{{ route('admin.patients.index') }}" class="heading-form pull-right" method="get"
+                    accept-charset="utf-8">
+                    <div class="form-group has-feedback" style="position: relative;">
+                        <input type="search" name="search" value="{{ request('search') }}" class="form-control"
+                            placeholder="Axtar" autocomplete="search">
+                        <button type="submit"
+                            style="background: transparent; border: none; position: absolute; right: 0; top: 0; height: 100%; padding: 0 15px; cursor: pointer; z-index: 10;">
                             <i class="icon-search4 text-size-base text-muted"></i>
-                        </div>
+                        </button>
                     </div>
+                    @if (request('sort'))
+                        <input type="hidden" name="sort" value="{{ request('sort') }}">
+                    @endif
+                    @if (request('direction'))
+                        <input type="hidden" name="direction" value="{{ request('direction') }}">
+                    @endif
                 </form>
             </div>
         </div>
